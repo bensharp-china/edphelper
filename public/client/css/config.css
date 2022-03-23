@@ -1,0 +1,42 @@
+*{  
+ 
+    background-color: #F0F0F0;
+}
+
+
+textarea{
+    height: 100px;
+    resize:none;
+}
+td{
+    vertical-align:top;
+    padding-left: 5px;
+}
+
+.title{
+    text-align: center;
+    font-size: x-large;
+    font-weight: 900;
+}
+.menus,.divcontent{
+    margin: 2%;
+}
+.cf_little_margin{
+    margin: 2%;
+    padding: 10px;
+}
+
+.lightfontcolor{
+    color:white;
+}
+
+.lightbackgroudcolor{
+    background-color: #F0F0F0;
+}
+
+.darkbackgroudcolor{
+    background-color:#2B303B;
+}
+.darkfontcolor{
+    color:#2B303B;
+}

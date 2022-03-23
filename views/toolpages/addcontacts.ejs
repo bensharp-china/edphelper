@@ -1,0 +1,90 @@
+
+<%- include('commenejs/header') %>
+<body>
+  <link rel="stylesheet" type="text/css" href="/xt/commen.css"/>
+<style type="text/css">
+
+    textarea{
+      resize: none;
+    }
+    .container{
+      width: 100%;
+     }
+     
+    </style>
+    
+    <script type="text/javascript">
+      var hostname='<%= host%>';
+    $(document).ready(function(){
+
+    
+    
+    $('#contactsubmit').bind('click',function(){
+      var contact_name=$("#contact_name").val().trim();
+     var contact_num=$("#contact_num").val().trim();
+     var  contact_address=$("#contact_address").val().trim();
+     var  contact_person=$("#contact_person").val().trim();
+    if(!cf_checkinput(contact_name,'empty')|!cf_checkinput(contact_num,'empty')|!cf_checkinput(contact_address,'empty')|!cf_checkinput(contact_person,'empty')){
+        alert('检查输入内容，不能为空')
+        return;
+    }
+    
+    var postcontent={
+        contactname: contact_name,
+        contactnum:contact_num,
+        contactaddress:contact_address,
+        contactperson:contact_person
+        
+    }
+       $.post(hostname+'/contactsubmit',
+           postcontent,
+           function(data,status){
+            alert(data.flag);
+            clearinput();
+            })
+    
+    })
+    
+    
+    })
+    
+    function clearinput(){
+ $("#contact_name").val('');
+   $("#contact_num").val('');
+    $("#contact_address").val('');
+   $("#contact_person").val('');
+    }
+    </script>
+    
+    <div class="bodycontent">
+    
+    
+        <div class="container">
+            <form role="form">
+                <div class="form-group">
+                  <label for="name" class="fontcolordefult">供应商：</label>
+                  <input id="contact_name" type="text" class="form-control" placeholder="供应商">
+                </div>
+
+                <div class="form-group">
+                  <label for="name" class="fontcolordefult">联系人：</label>
+                  <input id="contact_person" type="text" class="form-control" placeholder="联系人">
+                </div>
+                <div class="form-group">
+                  <label>电话：</label>
+                  <input id="contact_num" type="text" class="form-control" placeholder="电话">
+      
+                </div>
+                <div class="form-group">
+                    <label>地址：</label>
+                    <input id="contact_address" type="text" class="form-control" placeholder="地址">
+                </div>
+               </form>
+    
+    
+            <button  id="contactsubmit" type="button" class="btn btn-primary">提交</button>
+        </div>
+    
+    </div>
+</body>
+</html>

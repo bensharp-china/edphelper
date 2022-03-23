@@ -1,0 +1,35 @@
+*{
+    
+    font-size: 14px;
+    margin: 0px;
+    padding:0px;
+    /*background-color: #2B303B;*/
+}
+
+.cf_mainloginlogo{
+    
+padding-top: 5%;
+padding-bottom: 5%;
+      text-align: center;
+      font-size:x-large;
+     
+  
+  }
+
+.cf_font_color{
+   color: white;
+}
+
+.cf_input_color{
+  color: black;
+}
+
+  
+  .cf_end{
+    margin-top: 12%;
+    text-align: center;
+    padding-top: 2%;
+   padding-bottom: 2%;
+    border-top: 1px solid #777777;
+   
+  }

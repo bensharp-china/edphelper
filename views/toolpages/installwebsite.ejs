@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>初始化系统</title>
+<link rel="stylesheet" type="text/css" href="/xt/install.css"/>
+
+</head>
+<body>
+  <script   type="text/javascript" src="/xt/js/jquery.js" ></script>
+  <script   type="text/javascript" src="/xt/js/verifyinput.js" ></script>
+    <script type="text/javascript">
+     
+ var m= {
+               hostdns:$('#hostdns').val(),
+               databaseuser:$('#databaseuser').val(),
+               psword:$('#psword').val(),
+               database:$('#database').val(),
+               whichdatabase:$('#whichdatabase').val()
+            
+             }
+
+            
+    $(function(){
+    $("#installdbs").bind('click',function(){
+
+      var hostdnsstr=$('#hostdns').val().trim();
+      var databaseuserstr=$('#databaseuser').val().trim();
+      var pswordstr= $('#psword').val().trim();
+      var  databasestr=$('#database').val().trim();
+   
+    if(cf_checkinput(hostdnsstr,'ipaddress')&
+        cf_checkinput(databaseuserstr,'account')&
+        cf_checkinput(pswordstr,'password')&
+        cf_checkinput(databasestr,'databasename'))
+    {
+     $.get( '<%= ajaxdir %>'+'/installdbs',
+     {
+               hostdns:hostdnsstr,
+               databaseuser:databaseuserstr,
+               psword:pswordstr,
+               database:databasestr
+             },
+      function(data,status){
+        if(data){
+         alert(status)
+     
+        }else{
+       
+        }
+       
+      });
+    }else{
+
+      alert("输入不符合规范")
+    }
+    })
+    })
+ 
+    </script>
+    <div >
+<label>数据库基本设置：</label>
+
+    </div>
+    <div>
+        <label>数据库地址（IP或者域名）：</label>
+        <input type="text" id='hostdns'/>
+        <label>数据库用户名：</label>
+        <input type="text" id='databaseuser'/>
+        <label>数据库密码：</label>
+        <input type="text" id='psword'/>
+        <label>数据库名称：</label>
+        <input type="text" id='database'/>
+    
+        </div>
+
+       
+  <div>
+    <label>数据库实例（网站数据库）：</label>
+    <select id="whichdatabase"><option>BLOG</option>
+            <option>商城</option>
+            <option>追溯系统</option></select><br><br>
+   
+      
+  </div>
+  <div>
+    </div>
+<div class="tjdiv"><input id="installdbs" type="button" value="初始化系统数据库"/></div>
+</body>

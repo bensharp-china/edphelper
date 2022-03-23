@@ -1,0 +1,109 @@
+<%- include('commenejs/header') %>
+<body>
+  
+  <link rel="stylesheet" type="text/css" href="/xt/edp.css"/>
+  <script type="text/javascript">
+
+   function inicontrol(){
+   
+   }
+  $(function(){
+    var hostname='<%= host%>';
+  $("#cf_main_content").addClass("cf_content_detail");
+  $('#cf_logout').bind('click',function(){
+    var r=confirm("即将登出账户，确定么？");
+    if (r){
+      $.get(hostname+'/logout',
+                {},
+                function(data,status){
+
+                alert(data.flag)
+                window.location.replace(hostname+'/index');
+                })
+    }
+ 
+    
+
+  })
+  $('#cf_gotulogin').bind('click',function(){
+    
+    window.location.replace(hostname+'/login');
+
+  })
+
+
+  })
+
+
+function gotopage(c){
+$.get(c.id,
+{functionid:c.name}
+,
+    function(data,status){
+      $('#cf_secondary_menu').empty();
+    
+      if(data.secmenusloc){
+      for(var i=0;i<data.secmenusloc.length;i++){
+       var $newElement=$('<a class=\"cf_aclass animated fadeInDown\" id=\"'+data.secmenusloc[i]+'\"  onclick=\"getfunction(this)\">'+data.secmenuname[i]+'</a>');
+        $('#cf_secondary_menu').append($newElement);
+      
+      }
+    }else{
+      $('#cf_main_content').empty();
+      $('#cf_main_content').append('一级菜单数据获取出错');
+    }
+    
+    })
+
+
+}
+
+
+
+function getfunction(c){
+
+  $('#cf_main_content').attr('src',c.id);
+  
+}
+ </script>
+
+    <div class="cf_main_div">
+      <div class="cf_left_menu">
+      <div class="cf_edp_logo cf_font_color_light"> edp助手</div>
+        <ul class="cf_edp_menu animated fadeInDown cf_font_color_light">
+        <% for(var i = 0;i<menus.length; i++)
+        {   %>
+         <li class="cf_li"><a class="cf_aclass "  name="<%= functionids[i] %>" id="<%= pages[i] %>" onclick="gotopage(this) "><%= menus[i] %></a></li>
+         <% } %>
+        </ul>
+     
+   </div>
+
+
+   <div class="cf_main">
+       <div class="cf_secondary_menu_box">
+           <div  id="cf_secondary_menu"  class="cf_secondary_menu cf_font_color_light"></div>
+         <div  class="cf_displayuser">当前用户：
+           
+          <%if(userid==2) {%>
+          
+          <img class="cf_userlogo" src="<%= userprofilepic %>"><br><%= username %>
+         <a id='cf_gotulogin' href="#">登陆</a> 
+         <% } else{ %>
+          <img class="cf_userlogo" src="<%= userprofilepic %>"><br><%= username %>
+          <a id='cf_logout' href="#">登出</a> 
+
+          <% } %>
+        </div>
+  
+       </div>
+
+<iframe  id="cf_main_content" class="cf_content_detail" ></iframe>
+
+      </div>
+       
+
+ 
+    </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+*{
+   font-size: 14px;
+   margin: 0px;
+   padding:0px;
+   border: 0px;
+}
+li {list-style-type:none;}
+a{
+    color: white;
+}
+.cf_li{
+    font-size: x-large;
+}
+.cf_font_color_light{
+    color:white;
+}
+.cf_backgroudcolor{
+    background-color: #2f4050;
+}
+
+.cf_secondary_menu_box{
+    
+    position:relative 
+}
+
+.cf_main_div{
+
+    width: 100vw;
+    height: 100vh;
+}
+
+.cf_left_menu{
+    height: 100%; 
+}
+.cf_edp_logo,.cf_secondary_menu_box{
+    width:100%;
+}
+.cf_left_menu,.cf_main{
+    float: left;
+}
+.cf_edp_logo,.cf_secondary_menu_box{
+    background-color: #019FFF;
+    height:10%;
+}
+
+
+.cf_edp_menu{
+    margin-top: 10%;
+    margin-left:15%;
+}
+
+.cf_left_menu{
+    width:15%;
+}
+
+.cf_edp_logo{
+    font-size:x-large;
+    text-align: center;
+    line-height: 250%; 
+}
+
+.cf_main{
+    background-color: white;
+    width:85%; 
+    height:100%;
+     
+}
+
+
+
+
+
+.cf_secondary_menu{
+
+    position:absolute;
+    bottom:15px;
+  left:50px;
+    padding:0px;
+    color: cornsilk;
+   
+}
+.cf_displayuser{
+    position:absolute;
+    bottom:0px;
+    right: 0px;
+    padding:0px;
+
+    margin-right: 30px;
+    margin-top: 10px;
+   
+}
+.cf_userlogo{
+    height: 30px;
+    width: 30px;
+}
+.cf_aclass{
+    margin-left: 20px;
+}
+.cf_content_detail{
+    width: 85vw;
+    height: 85vh;
+}

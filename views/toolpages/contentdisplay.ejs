@@ -1,0 +1,95 @@
+<%- include('commenejs/header') %>
+<body>
+ 
+ 
+  <style>
+    *{
+      padding: 0px;
+      background-color: #F0F0F0; 
+    }
+ .background-color_control{
+  background-color: #F0F0F0; 
+ }
+
+ #issues_content_display{
+  
+     background-color: #F0F0F0; 
+    }
+
+  </style>
+<script type="text/javascript">
+function inicontrol(){};
+function inidatatable(){};
+function inievent(){};
+var hostname='<%= host%>';
+$(function(){
+  $('#selectissues').keydown(function(event) {  
+          inievent();
+          inicontrol();
+          inidatatable();
+          
+            if (event.keyCode == 13) {
+            
+              $.get(hostname+'/selectissues',
+           {issues_title:$('#selectissues').val().trim()},
+           function(data,status){
+     
+            if(data.length>1){
+              $('#issues_title').html('')
+              $('#issues_content').html('');
+              var da='';
+            for(var i=0;i<data.length;i++){
+               da+='<a id=\"'+data[i].issues_id+'\"  onclick=\"selectbyissusesid(this)\">'+data[i].issues_title+'</a></br>';
+            }
+            $('#issues_title_list').html(da);
+            return
+            }
+            $('#issues_title_list').html('');
+            flushcontent(data);
+
+            })
+            
+            
+            }
+             
+     })
+
+
+
+
+})
+
+function selectbyissusesid(p){
+
+  $.get(hostname+'/selectissuesbyid',{issues_id:p.id},
+     function(data,status){
+   
+    flushcontent(data);
+     })
+
+}
+
+
+function flushcontent(data){
+
+             $('#issues_title').html('<h4>'+data[0].issues_title+'</h4>');
+             $('#issues_content').html('<pre>'+data[0].issues_content+'</pre>')
+}
+</script>
+  
+        <div>
+<label for="name" class="fontcolordefult">查找：</label>
+<input  id="selectissues" type="text" class="form-control" placeholder="此处输入问题名称，直接回车即可">
+
+
+          </div>
+
+
+    <div id="issues_content_display">
+      <div id="issues_title_list"></div>
+<div id="issues_title"></div>
+<div id="issues_content">
+</div>
+
+</div>
+</body></html>

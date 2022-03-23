@@ -1,0 +1,109 @@
+<%- include('commenejs/header') %>
+<body>
+  <link rel="stylesheet" type="text/css" href="/xt/commen.css"/>
+    <link rel="stylesheet" type="text/css" href="/xt/config.css"/>
+    <script type="text/javascript"> 
+var hostname='<%= host%>';
+var roleimfor='';
+    $(function(){
+      $.get(hostname+'/getroleimfor',
+                {},
+                function(data,status){
+                  
+                   for(var i=0;i<data.length;i++){
+                     roleimfor+="<option value="+data[i].broleid+">"+data[i].brolename+"</option>"
+                   }
+
+               $("#cf_role").html(roleimfor);
+          })
+     
+          flushuserandrole();
+   
+      $("#cf_role").change(function(){
+          
+                 $.get(hostname+'/getmenutree',
+                {roleid:$("#cf_role").val()},
+                function(data,status){
+               
+                  $('#menutree').html('* 角色对应的功能如下：（灰色代表此角色不具备此功能）<br/>'+data);
+                })
+              
+                 })
+
+
+
+    })
+
+
+     function commitrole(p){
+      
+if (confirm("确定更改吗？")) {
+  var d=$('#userrole'+p.id).val();
+    
+    $.post(hostname+'/modifyuserrole',{
+     user_id:p.id,
+     broleid:d,
+    }, function(data,status){
+     alert(status);
+     flushuserandrole();
+    })
+} 
+      
+     }
+
+     function flushuserandrole()
+     {
+          $.get(hostname+'/getroleandfunc',
+                {},
+                function(data,status){
+                   var d="";
+           
+                   for(var i=0;i<data.length;i++){
+                  d+='<tr><td>'+data[i].user_name+'</td><td>'+data[i].user_nicname+'</td><td>'+data[i].brolename+'</td><td><select id=\"userrole'+data[i].user_id+'\">'+
+                    roleimfor+'</select></td><td><input type=\"button\"  id=\"'+data[i].user_id+'\" value=\"提交\" onclick=\"commitrole(this)\" /></td><td>';
+                   }
+
+               $("#roleandfunc tbody").html(d);
+          })
+     }
+    </script>
+<div class="title"> 系统设置</div>
+<div class="menus">
+<ul class="nav nav-tabs ">
+  <li role="presentation" class="active"><a href="#">角色与功能</a></li>
+  <li role="presentation"><a href="#">功能管理</a></li>
+
+</ul></div>
+
+<div class="cf_little_margin ">角色：
+   <select id='cf_role'><option>
+
+   </option></select>
+  </div>
+  <div id="menutree" class="cf_little_margin ">
+
+  </div>
+
+<div class="divcontent ">
+
+  <table class="table" id="roleandfunc">
+    <caption>角色与用户对应表：</caption>
+    <thead>
+      <tr>
+        <th>用户：</th>
+        <th>用户昵称：</th>
+        <th>当前角色：</th>
+        <th>角色：</th>
+        <th>变更：</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+
+  
+</div>
+
+</body>
+</html>

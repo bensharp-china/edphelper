@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<head>
+  <%- include('../commenejs/include') %>
+</head>
+<body>
+  <script   type="text/javascript" src="/xt/js/clienttool.js" ></script>
+    <link rel="stylesheet" type="text/css" href="/xt/commen.css"/>
+    <style>
+      *{
+        margin:0px;
+        padding: 0px;
+      }
+      .displayd{
+        display:none;
+      }
+    #contentmodifybg{
+
+position: absolute;
+top:0;
+left:0;
+z-index:200;
+height:100%;
+width:100%;
+background: #000000;
+filter:alpha(opacity=30);
+-moz-opacity:0.3;
+opacity:0.3;
+}
+#contentmodify{
+
+  position:absolute;
+top:30%;
+left:30%;
+width: 40%;
+z-index:201;
+background-color: white;
+}
+.textstyle{
+margin-right: 3%;
+margin-left: 3%;
+
+}
+.dd{
+ margin: 0 auto;
+}
+    </style>
+<script type="text/javascript">
+     var hostname='<%= host%>',modify_contactid=''
+
+$(function(){
+
+
+  $('#contentmodifybg').addClass('displayd');
+ $('#contentmodify').addClass('displayd');
+$("#contact_name").keydown(function(event) {  
+         if (event.keyCode == 13) { 
+          $.get('/getcontactmesbyname',{contactname:$('#contact_name').val().trim()},function(data,status){
+            if(data.flag){
+              $('#contacttable tbody').html(data.flag);
+              return;
+            }
+         
+            
+
+})
+         }  
+     }) 
+     
+     
+    $('#cancelmodify').bind('click',function(){
+       closemodifywindow();
+    })
+    
+    $('#modify').bind('click',function(){
+    var contact_name=$("#modifycys").val().trim();
+     var contact_num=$("#modifydh").val().trim();
+     var  contact_address=$("#modifyyjdz").val().trim();
+     var  contact_person=$("#modifylxr").val().trim();
+     var postcontent={
+         contact_id:modify_contactid,
+        contactname: contact_name,
+        contactnum:contact_num,
+        contactaddress:contact_address,
+        contactperson:contact_person
+        
+    }
+   
+       $.post(hostname+'/contactmodify',
+           postcontent,
+           function(data,status){
+            alert(data.flag)
+            flushcontact();
+            closemodifywindow();
+            })
+  })
+  
+  initable();
+})
+
+
+function delcontact(c){
+ 
+  if (confirm("确定要删除当前数据吗？")) {
+    $.get(hostname+'/delcontact',
+    {contactid:c.id}
+   , function(data,status){
+     alert(status);
+     flushcontact();
+    })
+} 
+
+
+}
+
+function modifywindow(p){
+ modify_contactid=p.id.slice(3);
+  $('#modifycys').val($('#ctn'+modify_contactid).text());
+ $('#modifylxr').val($('#ctp'+modify_contactid).text());
+ $('#modifydh').val($('#ctph'+modify_contactid).text());
+ $('#modifyyjdz').val($('#cta'+modify_contactid).text());
+
+  $('#contentmodifybg').removeClass('displayd');
+ $('#contentmodify').removeClass('displayd');
+ 
+}
+
+//初始化数据表
+function initable(){
+   //数据列初始化
+  var holumns = [{
+        checkbox: true,
+        width: 20,
+        formatter: function (value, row, index) {
+            var pageSize = $('#contacttable').bootstrapTable('getOptions').pageSize;
+            // 获取当前是第几页
+            var pageNumber = $('#contacttable').bootstrapTable(
+                'getOptions').pageNumber;
+            // 返回序号，注意index是从0开始的，所以要加上1
+            return '<label class="rowIndex">'
+                + (pageSize * (pageNumber - 1) + index + 1)
+                + '</label>';
+        }
+    }];
+
+    var fColumn = [
+        {
+            field: 'contactname', sortable: true, title: '供应商'
+        },
+        {
+            field: 'contactperson', sortable: true, title: '联系人'
+        },
+        {
+            field: 'phonenum', sortable: true, title: '电话'
+        },
+        {
+            field: 'contactaddress', sortable: true, title: '联系地址'
+        },
+        {
+            field: 'contactaddress', sortable: true, title: '操作'
+        },
+
+    ];
+
+
+    $('#contacttable').bootstrapTable({
+        url: hostname + "/getcontactmes",
+        method: 'GET',
+        contentType: "application/x-www-form-urlencoded",
+        checkboxHeader: true,
+        cache: false, // 不缓存
+        striped: true, // 隔行加亮
+        pagination: true, // 开启分页功能
+        // showColumns:true,
+        dataType: "json",
+        idField: 'id',
+        pageNumber: 1,
+        pageSize: 50, // 设置默认分页为 10
+        pageList: [50, 100], // 自定义分页列
+    
+        clickToSelect: true, // 单击行即可以选中
+        sidePagination: "server", // 服务端请求
+        sortOrder: 'desc', // 设置排序为反序 desc
+        sortName: 'contactid',
+        smartDisplay: true, // 智能显示 pagination 和 cardview 等
+        columns: [holumns.concat(fColumn)]
+     
+   
+    });
+}
+
+
+
+//
+function closemodifywindow(){
+
+ $('#contentmodifybg').addClass('displayd');
+ $('#contentmodify').addClass('displayd');
+ $('#modifycys').val('');
+ $('#modifylxr').val('');
+ $('#modifydh').val('');
+ $('#modifyyjdz').val('');
+}
+
+
+</script>
+<div id="contentmodifybg"></div>
+<div id="contentmodify">
+  <table class="table" >
+    <tr>      <div id=""  class="textstyle">
+      <label>供应商</label>
+      <input type="text" name="username"  id="modifycys" value="" class="form-control " />
+  </div></tr>
+ 
+  <tr>      <div id="" class="textstyle" >
+    <label>联系人</label>
+    <input type="text" name="username" id="modifylxr"  value="" class="form-control" />
+</div></tr>
+<tr>      <div id=""  class="textstyle">
+  <label>电话</label>
+  <input type="text" name="username"  id="modifydh"  value="" class="form-control " />
+</div></tr>
+<tr>      <div id="" class="textstyle" >
+  <label>邮寄地址</label>
+  <input type="text" name="username" id="modifyyjdz"  value="" class="form-control " />
+</div></tr>
+
+  <tr><td class="dd">
+    <input type="button" value="提交" class="btn btn-primary " id="modify"/>&nbsp;&nbsp;&nbsp;
+      <input type="button" value="取消" id="cancelmodify" class="btn btn-primary "/>
+    </td>
+  </tr>
+  </table>
+
+
+
+</div>
+    <div>
+        <label for="name" class="fontcolordefult">查找：</label>
+        <input id="contact_name" type="text" class="form-control" placeholder="输入供应商名称后直接回车">
+      </div>
+
+<div>
+   <br/>
+    <table class="table" id="contacttable">
+    
+      </table>
+</div>
+
+</body></html>
